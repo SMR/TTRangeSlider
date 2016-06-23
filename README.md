@@ -57,9 +57,10 @@ Each handle in the slider has a label above it showing the current selected valu
 #### `hideLabels`
 When set to `YES` the labesl above the slider controls will be hidden. Default is NO.
 #### `minDistance`
-The minimum distance the two selected slider values must be apart. -1 for no minimum. Default is -1.
+The minimum distance the two selected slider values must be apart. Value below 0 will be ignored. Default is -1.
+
 #### `maxDistance`
-The maximum distance the two selected slider values must be apart. -1 for no maximum. Default is -1.
+The maximum distance the two selected slider values must be apart. Value below 0 will be ignored. Default is -1.
 
 You can override this default here by supplying your own NSNumberFormatter. For example, you could supply an NSNumberFormatter that has a currency style, or a prefix or suffix.
 
