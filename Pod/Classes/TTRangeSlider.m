@@ -381,7 +381,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     //multiply that percentage by self.maxValue to get the new selected minimum value
     float selectedValue = percentage * (self.maxValue - self.minValue) + self.minValue;
 
-    if (self.leftHandleSelected)
+    if (self.leftHandleSelected && !self.hideMinimumHandle)
     {
         if (selectedValue < self.selectedMaximum){
             self.selectedMinimum = selectedValue;
@@ -391,7 +391,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
         }
 
     }
-    else if (self.rightHandleSelected)
+    else if (self.rightHandleSelected && !self.hideMaximumHandle)
     {
         if (selectedValue > self.selectedMinimum || (selectedValue >= self.minValue)){ //don't let the dots cross over
             self.selectedMaximum = selectedValue;
