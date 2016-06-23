@@ -75,8 +75,14 @@ IB_DESIGNABLE
  */
 @property (nonatomic, strong) IBInspectable UIFont *maxLabelFont;
 
+/**
+ *  Minimum distance between minimum and maximum values. Will be disabled if set below @p 0. Defaults to -1.
+ */
 @property (nonatomic, assign) IBInspectable float minDistance;
 
+/**
+ *  Maximum distance between minimum and maximum values. Will be disabled if set below @p 0. Defaults to -1.
+ */
 @property (nonatomic, assign) IBInspectable float maxDistance;
 
 /**

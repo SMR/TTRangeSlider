@@ -334,13 +334,13 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
     float diff = self.selectedMaximum - self.selectedMinimum;
 
-    if (self.minDistance != -1 && diff < self.minDistance) {
+    if (self.minDistance >= 0 && diff < self.minDistance) {
         if(self.leftHandleSelected){
             _selectedMinimum = self.selectedMaximum - self.minDistance;
         }else{
             _selectedMaximum = self.selectedMinimum + self.minDistance;
         }
-    }else if(self.maxDistance != -1 && diff > self.maxDistance){
+    }else if(self.maxDistance >= 0 && diff > self.maxDistance){
 
         if(self.leftHandleSelected){
             _selectedMinimum = self.selectedMaximum - self.maxDistance;
@@ -383,8 +383,13 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
     if (self.leftHandleSelected && !self.hideMinimumHandle) {
 		
-		float lowerLimit = MIN(self.minValue, self.selectedMaximum - self.maxDistance);
-		float upperLimit = self.selectedMaximum - self.minDistance;
+		float lowerLimitFromSelectedMaximum = self.selectedMaximum;
+		lowerLimitFromSelectedMaximum -= (self.maxDistance >= 0) ? self.maxDistance : 0;
+		
+		float lowerLimit = MIN(self.minValue, lowerLimitFromSelectedMaximum);
+		
+		float upperLimit = self.selectedMaximum;
+		upperLimit -= (self.minDistance >= 0) ? self.minDistance : 0;
 		
         if (selectedValue > upperLimit) {
             self.selectedMinimum = upperLimit;
@@ -399,8 +404,13 @@ static const CGFloat kLabelsFontSize = 12.0f;
     }
     else if (self.rightHandleSelected && !self.hideMaximumHandle) {
 		
-		float lowerLimit = self.selectedMinimum + self.minDistance;
-		float upperLimit = MAX(self.selectedMinimum + self.maxDistance, self.maxValue);
+		float lowerLimit = self.selectedMinimum;
+		lowerLimit += (self.minDistance >= 0) ? self.minDistance : 0;
+		
+		float upperLimitFromSelectedMinimum = self.selectedMinimum;
+		upperLimitFromSelectedMinimum += (self.maxDistance >= 0) ? self.maxDistance : 0;
+		
+		float upperLimit = MAX(upperLimitFromSelectedMinimum, self.maxValue);
 		
 		if (selectedValue > upperLimit) {
 			self.selectedMaximum = upperLimit;
