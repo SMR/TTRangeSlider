@@ -381,24 +381,36 @@ static const CGFloat kLabelsFontSize = 12.0f;
     //multiply that percentage by self.maxValue to get the new selected minimum value
     float selectedValue = percentage * (self.maxValue - self.minValue) + self.minValue;
 
-    if (self.leftHandleSelected && !self.hideMinimumHandle)
-    {
-        if (selectedValue < self.selectedMaximum){
-            self.selectedMinimum = selectedValue;
+    if (self.leftHandleSelected && !self.hideMinimumHandle) {
+		
+		float lowerLimit = MIN(self.minValue, self.selectedMaximum - self.maxDistance);
+		float upperLimit = self.selectedMaximum - self.minDistance;
+		
+        if (selectedValue > upperLimit) {
+            self.selectedMinimum = upperLimit;
         }
+		else if (selectedValue < lowerLimit) {
+			self.selectedMinimum = lowerLimit;
+		}
         else {
-            self.selectedMinimum = self.selectedMaximum;
+			self.selectedMinimum = selectedValue;
         }
 
     }
-    else if (self.rightHandleSelected && !self.hideMaximumHandle)
-    {
-        if (selectedValue > self.selectedMinimum || (selectedValue >= self.minValue)){ //don't let the dots cross over
-            self.selectedMaximum = selectedValue;
-        }
-        else {
-            self.selectedMaximum = self.selectedMinimum;
-        }
+    else if (self.rightHandleSelected && !self.hideMaximumHandle) {
+		
+		float lowerLimit = self.selectedMinimum + self.minDistance;
+		float upperLimit = MAX(self.selectedMinimum + self.maxDistance, self.maxValue);
+		
+		if (selectedValue > upperLimit) {
+			self.selectedMaximum = upperLimit;
+		}
+		else if (selectedValue < lowerLimit) {
+			self.selectedMaximum = lowerLimit;
+		}
+		else {
+			self.selectedMaximum = selectedValue;
+		}
     }
 
     //no need to refresh the view because it is done as a sideeffect of setting the property
