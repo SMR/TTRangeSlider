@@ -46,6 +46,16 @@ IB_DESIGNABLE
 @property (nonatomic, assign) IBInspectable BOOL hideLabels;
 
 /**
+ *  Hides minimum handle and its label if set to true, and shows it otherwise. Defaults to false.
+ */
+@property (nonatomic, assign) IBInspectable BOOL hideMinimumHandle;
+
+/**
+ *  Hides maximum handle and its label if set to true, and shows it otherwise. Defaults to false.
+ */
+@property (nonatomic, assign) IBInspectable BOOL hideMaximumHandle;
+
+/**
  * The color of the minimum value text label. If not set, the default is the tintColor.
  */
 @property (nonatomic, strong) IBInspectable UIColor *minLabelColour;
@@ -64,12 +74,6 @@ IB_DESIGNABLE
  * The font of the maximum value text label. If not set, the default is system font size 12.
  */
 @property (nonatomic, strong) IBInspectable UIFont *maxLabelFont;
-
-/**
- * If true, the control will mimic a normal slider and have only one handle rather than a range.
- * In this case, the selectedMinValue will be not functional anymore. Use selectedMaxValue instead to determine the value the user has selected.
- */
-@property (nonatomic, assign) IBInspectable BOOL disableRange;
 
 @property (nonatomic, assign) IBInspectable float minDistance;
 

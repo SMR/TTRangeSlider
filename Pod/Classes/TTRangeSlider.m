@@ -47,6 +47,8 @@ static const CGFloat kLabelsFontSize = 12.0f;
     _step = 0.1f;
 
     _hideLabels = NO;
+	_hideMinimumHandle = NO;
+	_hideMaximumHandle = NO;
     
     _handleDiameter = 16.0;
     _selectedHandleDiameterMultiplier = 1.7;
@@ -266,7 +268,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     float newRightMostXInMinLabel = newMinLabelCenter.x + minLabelTextSize.width/2;
     float newSpacingBetweenTextLabels = newLeftMostXInMaxLabel - newRightMostXInMinLabel;
 
-    if (self.disableRange == YES || newSpacingBetweenTextLabels > minSpacingBetweenLabels) {
+    if (newSpacingBetweenTextLabels > minSpacingBetweenLabels) {
         self.minLabel.position = newMinLabelCenter;
         self.maxLabel.position = newMaxLabelCenter;
     }
@@ -297,19 +299,15 @@ static const CGFloat kLabelsFontSize = 12.0f;
         float distanceFromLeftHandle = [self distanceBetweenPoint:gesturePressLocation andPoint:[self getCentreOfRect:self.leftHandle.frame]];
         float distanceFromRightHandle =[self distanceBetweenPoint:gesturePressLocation andPoint:[self getCentreOfRect:self.rightHandle.frame]];
 
-        if (distanceFromLeftHandle < distanceFromRightHandle && self.disableRange == NO){
-            self.leftHandleSelected = YES;
-            [self animateHandle:self.leftHandle withSelection:YES];
-        } else {
-            if (self.selectedMaximum == self.maxValue && [self getCentreOfRect:self.leftHandle.frame].x == [self getCentreOfRect:self.rightHandle.frame].x) {
-                self.leftHandleSelected = YES;
-                [self animateHandle:self.leftHandle withSelection:YES];
-            }
-            else {
-                self.rightHandleSelected = YES;
-                [self animateHandle:self.rightHandle withSelection:YES];
-            }
-        }
+		if (self.selectedMaximum == self.maxValue && [self getCentreOfRect:self.leftHandle.frame].x == [self getCentreOfRect:self.rightHandle.frame].x) {
+			self.leftHandleSelected = YES;
+			[self animateHandle:self.leftHandle withSelection:YES];
+		}
+		else {
+			self.rightHandleSelected = YES;
+			[self animateHandle:self.rightHandle withSelection:YES];
+		}
+		
 
         if ([self.delegate respondsToSelector:@selector(didStartTouchesInRangeSlider:)]){
             [self.delegate didStartTouchesInRangeSlider:self];
@@ -389,7 +387,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     }
     else if (self.rightHandleSelected)
     {
-        if (selectedValue > self.selectedMinimum || (self.disableRange && selectedValue >= self.minValue)){ //don't let the dots cross over, (unless range is disabled, in which case just dont let the dot fall off the end of the screen)
+        if (selectedValue > self.selectedMinimum || (selectedValue >= self.minValue)){ //don't let the dots cross over
             self.selectedMaximum = selectedValue;
         }
         else {
@@ -477,14 +475,18 @@ static const CGFloat kLabelsFontSize = 12.0f;
     [CATransaction commit];
 }
 
-- (void)setDisableRange:(BOOL)disableRange {
-    _disableRange = disableRange;
-    if (_disableRange){
-        self.leftHandle.hidden = YES;
-        self.minLabel.hidden = YES;
-    } else {
-        self.leftHandle.hidden = NO;
-    }
+- (void)setHideMinimumHandle:(BOOL)hideMinimumHandle {
+	
+	_hideMinimumHandle = hideMinimumHandle;
+	self.leftHandle.hidden = hideMinimumHandle;
+	self.minLabel.hidden = hideMinimumHandle;
+}
+
+- (void)setHideMaximumHandle:(BOOL)hideMaximumHandle
+{
+	_hideMaximumHandle = hideMaximumHandle;
+	self.rightHandle.hidden = hideMaximumHandle;
+	self.maxLabel.hidden = hideMaximumHandle;
 }
 
 - (NSNumberFormatter *)decimalNumberFormatter {
