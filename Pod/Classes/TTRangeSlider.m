@@ -209,7 +209,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
 }
 
 - (void)updateLabelValues {
-    if (self.hideLabels || [self.numberFormatterOverride isEqual:[NSNull null]]){
+    if ([self.numberFormatterOverride isEqual:[NSNull null]]){
         self.minLabel.string = @"";
         self.maxLabel.string = @"";
         return;
@@ -473,6 +473,12 @@ static const CGFloat kLabelsFontSize = 12.0f;
         self.maxLabel.foregroundColor = color;
     }
     [CATransaction commit];
+}
+
+- (void)setHideLabels:(BOOL)hideLabels
+{
+	self.minLabel.hidden = hideLabels;
+	self.maxLabel.hidden = hideLabels;
 }
 
 - (void)setHideMinimumHandle:(BOOL)hideMinimumHandle {
