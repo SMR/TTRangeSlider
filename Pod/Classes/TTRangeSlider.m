@@ -299,14 +299,20 @@ static const CGFloat kLabelsFontSize = 12.0f;
         float distanceFromLeftHandle = [self distanceBetweenPoint:gesturePressLocation andPoint:[self getCentreOfRect:self.leftHandle.frame]];
         float distanceFromRightHandle =[self distanceBetweenPoint:gesturePressLocation andPoint:[self getCentreOfRect:self.rightHandle.frame]];
 
-		if (self.selectedMaximum == self.maxValue && [self getCentreOfRect:self.leftHandle.frame].x == [self getCentreOfRect:self.rightHandle.frame].x) {
+		if (distanceFromLeftHandle < distanceFromRightHandle){
 			self.leftHandleSelected = YES;
 			[self animateHandle:self.leftHandle withSelection:YES];
+		} else {
+			if (self.selectedMaximum == self.maxValue && [self getCentreOfRect:self.leftHandle.frame].x == [self getCentreOfRect:self.rightHandle.frame].x) {
+				self.leftHandleSelected = YES;
+				[self animateHandle:self.leftHandle withSelection:YES];
+			}
+			else {
+				self.rightHandleSelected = YES;
+				[self animateHandle:self.rightHandle withSelection:YES];
+			}
 		}
-		else {
-			self.rightHandleSelected = YES;
-			[self animateHandle:self.rightHandle withSelection:YES];
-		}
+
 		
 
         if ([self.delegate respondsToSelector:@selector(didStartTouchesInRangeSlider:)]){
